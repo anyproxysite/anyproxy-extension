@@ -1,144 +1,62 @@
-# AnyProxy Browser Extension
+# AnyProxy extension — free web proxy for Chrome, Edge and Firefox
 
-The official browser extension for **[AnyProxy](https://anyproxy.site)** — a
-free, encrypted web proxy that unblocks 500+ sites in one click, right
-inside your browser tab. No signup. No VPN app. No logs. Website:
-**[https://anyproxy.site](https://anyproxy.site)**.
+The official browser extension for **[AnyProxy](https://anyproxy.site)**, a free web proxy that opens websites inside your browser tab. Paste a URL or click the toolbar button, and the page loads through an AnyProxy server instead of directly from your device. No install beyond the extension, no account needed.
 
+[![Chrome Web Store](https://img.shields.io/badge/Chrome%20Web%20Store-install-FF6A2C)](https://chromewebstore.google.com/detail/gdeefgkephoadlankpbacofdfmdnncmi)
 [![Website](https://img.shields.io/badge/website-anyproxy.site-FF6A2C)](https://anyproxy.site)
-[![Pricing](https://img.shields.io/badge/pricing-%244.99%2Fmo-FF6A2C)](https://anyproxy.site/pricing/)
 [![Manifest V3](https://img.shields.io/badge/manifest-v3-3DDC97)](https://developer.chrome.com/docs/extensions/mv3/intro/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
-Works on Chrome, Edge, Brave, Arc, Opera, and Firefox. Unblocks YouTube,
-Instagram, TikTok, X, Facebook, Reddit, ChatGPT, Telegram, WhatsApp Web,
-Discord, Wikipedia, and more.
-
-> Learn about the underlying proxy service, regions, and privacy policy at
-> [anyproxy.site](https://anyproxy.site). Full pricing and Pro tier at
-> [anyproxy.site/pricing](https://anyproxy.site/pricing/).
-
-## Screenshots
-
-<p align="center">
-  <img src="icons/icon-128.png" width="96" alt="AnyProxy icon" />
-</p>
-
-*(Screenshots live in the Chrome Web Store listing.)*
-
-## Features
-
-- **One-click browsing.** Toolbar popup, paste a URL, hit Browse. Site
-  opens through AnyProxy in a new tab.
-- **Auto-detects the current tab.** Popup prefills the current site's
-  hostname and updates the CTA to `Browse <Site> Anonymously`.
-- **Right-click "Open in AnyProxy"** on any link.
-- **Popular tiles** for YouTube, Reddit, X, Wikipedia, Facebook, Instagram.
-- **Recent sites** — one click to reopen anything you've proxied.
-- **Live latency** across six regions (Singapore, Frankfurt, Virginia,
-  London, Tokyo, São Paulo). Popup auto-picks the fastest.
-- **Zero host permissions.** The extension does not intercept traffic
-  outside the popup click. Only `storage`, `contextMenus`, and
-  `activeTab` — the smallest permission set that ships this feature.
-
-Full feature list and privacy policy at
-[https://anyproxy.site/privacy/](https://anyproxy.site/privacy/).
+> Not to be confused with other projects named "anyproxy" (for example the Alibaba developer tool or the anyproxy.net service). This repository is the extension for **anyproxy.site** only.
 
 ## Install
 
-**Chrome / Edge / Brave / Arc / Opera** — Chrome Web Store
-*(coming soon; direct link will land here at v1.0.1)*
+- **Chrome, Edge, Brave, Opera, Arc:** [Chrome Web Store](https://chromewebstore.google.com/detail/gdeefgkephoadlankpbacofdfmdnncmi)
+- **Firefox:** coming soon. Until then, load it from source (below).
+- **Without an extension:** use the web app at [anyproxy.site](https://anyproxy.site).
 
-**Firefox** — [addons.mozilla.org](https://addons.mozilla.org/) (search
-"AnyProxy")
+## Features
 
-**From source** (any Chromium browser):
-
-1. Clone this repo
-2. Open `chrome://extensions`
-3. Toggle "Developer mode" on
-4. Click "Load unpacked" and select the `ap-browser-ext/` folder
-
-**Firefox from source:**
-
-1. Clone this repo
-2. Open `about:debugging#/runtime/this-firefox`
-3. Click "Load Temporary Add-on…" and pick `manifest.json`
+- **One click:** open the current site, or paste any URL, through AnyProxy.
+- **Right-click "Open in AnyProxy"** on any link.
+- **Region picker with live latency:** free regions in Singapore, Frankfurt and Virginia; [Pro](https://anyproxy.site/pricing/) adds Tokyo and Los Angeles.
+- **Recent sites** to reopen anything you've opened before.
+- **Small permission set:** `storage`, `contextMenus`, `activeTab`. The extension does not intercept or read your browsing traffic.
 
 ## How it works
 
-The extension is deliberately thin — all real proxying is done by the
-[AnyProxy](https://anyproxy.site) web app. The popup:
+The extension is a thin launcher. All proxying happens in the [AnyProxy web app](https://anyproxy.site):
 
-1. Reads the URL you enter (or the active tab's hostname)
-2. Opens `https://anyproxy.site/<target>?region=<slug>` in a new tab
-3. AnyProxy's edge middleware picks the region, signs the URL, and
-   redirects to the regional edge (e.g. `sg.anyproxy.site/r/...`) which
-   fetches the page and rewrites it back through the proxy
+1. The popup reads the URL you enter (or the active tab's address).
+2. It opens `https://anyproxy.site/?u=<url>` with your chosen region in a new tab.
+3. AnyProxy fetches the page from that region's server and shows it in your tab.
 
-The extension does not include a proxy engine. No `declarativeNetRequest`,
-no host permissions, no traffic interception. Reviewer-friendly by design.
+There is no proxy engine, no `declarativeNetRequest` rule set and no host permission in this code.
 
-## Repo layout
+## What AnyProxy is (and isn't)
 
-```
-ap-browser-ext/
-├── manifest.json          MV3 manifest — storage, contextMenus, activeTab
-├── popup/                 360×600 toolbar popup
-│   ├── popup.html
-│   ├── popup.css
-│   └── popup.js
-├── background/
-│   └── service-worker.js  Right-click "Open in AnyProxy" menu item
-└── icons/                 16/32/48/128 PNGs
-```
+- A browser-based web proxy: it covers the tab you open through it, not your whole device. It is not a VPN.
+- Many sites sit behind Cloudflare's "Just a moment…" check. AnyProxy completes that check on your behalf; the first visit can take a few seconds. Test data: [web proxy that works with Cloudflare (2026)](https://anyproxy.site/blog/web-proxy-that-works-with-cloudflare-2026/).
+- Free to use. Pro ($4.99/month) adds more regions and removes ads on AnyProxy pages: [pricing](https://anyproxy.site/pricing/).
 
-## Region catalog
+Guides: [free web proxy](https://anyproxy.site/proxy/) · [help center](https://anyproxy.site/help/) · [privacy policy](https://anyproxy.site/privacy/)
 
-The popup fetches the region list from
-[`https://anyproxy.site/regions.json`](https://anyproxy.site/regions.json)
-on open, then measures live RTT to each region's `pingUrl` from the
-user's browser — three samples, keep the minimum. Results are cached in
-`chrome.storage.local` for 10 minutes.
+## Load from source
 
-Adding a new region is a single JSON edit on the server. Extension
-picks it up on the next refresh.
+**Chromium browsers**
+1. Clone this repo.
+2. Open `chrome://extensions` and turn on Developer mode.
+3. Click "Load unpacked" and pick this folder.
 
-## Development
+**Firefox**
+1. Clone this repo.
+2. Open `about:debugging#/runtime/this-firefox`.
+3. Click "Load Temporary Add-on…" and pick `manifest.json`.
 
-No build step. Edit the files in `popup/` and reload the extension in
-`chrome://extensions`.
+## Support
 
-Quick sanity checks:
-
-```bash
-# Validate manifest JSON
-python3 -c "import json; json.load(open('manifest.json'))"
-
-# Parse-check popup JS
-node -e "new Function(require('fs').readFileSync('popup/popup.js','utf8'))"
-```
-
-## Related repos
-
-- **[anyproxy.site](https://anyproxy.site)** — the marketing site and
-  Cloudflare Pages Functions (routing, region signing, `/regions.json`
-  endpoint)
-
-## Contributing
-
-Issues and PRs welcome. Please open an issue before starting a large
-change so we can align on the direction.
+Questions or bugs: open an issue here or write to support@anyproxy.site.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
-
-## Links
-
-- Website: [https://anyproxy.site](https://anyproxy.site)
-- Pricing: [https://anyproxy.site/pricing/](https://anyproxy.site/pricing/)
-- Privacy: [https://anyproxy.site/privacy/](https://anyproxy.site/privacy/)
-- Terms: [https://anyproxy.site/terms/](https://anyproxy.site/terms/)
-- Contact: [https://anyproxy.site/contact/](https://anyproxy.site/contact/)
-- Blog: [https://anyproxy.site/blog/](https://anyproxy.site/blog/)
+MIT, see [LICENSE](LICENSE).
