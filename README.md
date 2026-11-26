@@ -55,7 +55,8 @@ Guides: [free web proxy](https://anyproxy.site/proxy/) · [help center](https://
 
 ## Support
 
-Questions or bugs: open an issue here or write to support@anyproxy.site.
+- **Is it down, or is it just me?** Check [status.anyproxy.site](https://status.anyproxy.site): live status and 30-day uptime for each region, whether popular sites are working right now, recent fixes, and a form to report a site that won't open.
+- Questions or bugs: open an issue here or write to support@anyproxy.site.
 
 ## License
 
